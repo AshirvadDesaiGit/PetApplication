@@ -50,7 +50,7 @@ public class PetController {
 	public MappingJacksonValue getPets() {
 		SimpleBeanPropertyFilter filter=SimpleBeanPropertyFilter.filterOutAllExcept("petname","petAddress");
 		try {
-				return PetListDemoFilter(petDao.listpets(), filter);
+				return petListDemoFilter(petDao.listpets(), filter);
 				
 		} catch (Exception e) {
 			return null;
@@ -61,21 +61,21 @@ public class PetController {
 	//implementing HATEOAS :Hypermedia as the Engine of Application State
 	//for returning a link to get pets
 	@GetMapping(path="/pet/{petid}")
-	public Resource<Pet> getPet(@PathVariable String petid,@RequestHeader(name ="Accept-Language",required=false) Locale locale) {
+	public Resource<Pet> getPet(@PathVariable String petid) {//@RequestHeader(name ="Accept-Language",required=false) Locale locale
 		
 		Pet pet= petDao.findPet(petid);
 		if (pet==null)
 			throw new ResourceNotFoundException("this resource does not exist");
 		//Internationalization 
-			String petsex=messageSource.getMessage("dog.male",null,locale);
-		//String petsex=messageSource.getMessage("dog.male",null,LocaleContextHolder.getLocale()); used in case we use a AcceptHeaderLocaleResolver
+			//String petsex=messageSource.getMessage("dog.male",null,locale);
+		String petsex=messageSource.getMessage("dog.male",null,LocaleContextHolder.getLocale()); //used in case we use a AcceptHeaderLocaleResolver
 		
 		pet.setSex(petsex);
 		//HATEOS
 		//hateoas resource
 		Resource<Pet> resource = new Resource<Pet>(pet);
-		ControllerLinkBuilder linkAllPets= linkTo(methodOn(this.getClass()).getPets()); //method from ControllerLinkBuilder
-		resource.add(linkAllPets.withRel("All Pets"));
+		//ControllerLinkBuilder linkAllPets= linkTo(methodOn(this.getClass()).removePet(petid)); //method from ControllerLinkBuilder
+		//resource.add(linkAllPets.withRel("All Pets"));
 		return resource;
 	}
 	
@@ -123,7 +123,7 @@ public class PetController {
 	 * @param pet
 	 * @return
 	 */
-	private MappingJacksonValue PetListDemoFilter(List<Pet> pet,SimpleBeanPropertyFilter filter) {
+	private MappingJacksonValue petListDemoFilter(List<Pet> pet,SimpleBeanPropertyFilter filter) {
 		
 		FilterProvider filters=new SimpleFilterProvider().addFilter("PetListFilter", filter);
 		MappingJacksonValue mapping=new MappingJacksonValue(pet);

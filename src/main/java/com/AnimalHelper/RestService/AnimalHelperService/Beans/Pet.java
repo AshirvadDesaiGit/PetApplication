@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 @ApiModel("Pet")// swagger description
-@JsonFilter("PetListFilter") //register filter for dynamic filtering
+//@JsonFilter("PetListFilter") //register filter for dynamic filtering
 @Entity
 public class Pet {
 	
