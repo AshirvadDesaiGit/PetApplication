@@ -1,34 +1,68 @@
 package com.AnimalHelper.RestService.AnimalHelperService.Beans;
 
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import io.swagger.annotations.ApiModel;
+@ApiModel("Pet")
+@Entity
 public class PetShop {
 
-	 String field1;
-	 String field2;
-	 String field3;
-	public PetShop(String field1, String field2, String field4) {
+	@Id  //identifying this as an id
+	@GeneratedValue // making this as an auto generated value
+	private int petid;
+	 int id;
+	 String name;
+	 String franchise;
+	 String address;
+	 //List<Pet> pets;
+	
+	 public PetShop()
+	{
+		
+	}
+	public PetShop(String name, String franchise, String address) {
 		super();
-		this.field1 = field1;
-		this.field2 = field2;
-		this.field3 = field4;
+		this.name = name;
+		this.franchise = franchise;
+		this.address = address;
 	}
-	public String getField1() {
-		return field1;
+	public int getPetid() {
+		return petid;
 	}
-	public void setField1(String field1) {
-		this.field1 = field1;
+	public void setPetid(int petid) {
+		this.petid = petid;
 	}
-	public String getField2() {
-		return field2;
+	public int getId() {
+		return id;
 	}
-	public void setField2(String field2) {
-		this.field2 = field2;
+	public void setId(int id) {
+		this.id = id;
 	}
-	public String getField3() {
-		return field3;
+	public String getName() {
+		return name;
 	}
-	public void setField3(String field3) {
-		this.field3 = field3;
+	public void setName(String name) {
+		this.name = name;
 	}
+	public String getFranchise() {
+		return franchise;
+	}
+	public void setFranchise(String franchise) {
+		this.franchise = franchise;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	 
+	 
 	 
 	 
 }

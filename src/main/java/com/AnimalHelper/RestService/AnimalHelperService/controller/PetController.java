@@ -61,31 +61,32 @@ public class PetController {
 	//implementing HATEOAS :Hypermedia as the Engine of Application State
 	//for returning a link to get pets
 	@GetMapping(path="/pet/{petid}")
-	public Resource<Pet> getPet(@PathVariable String petid) {//@RequestHeader(name ="Accept-Language",required=false) Locale locale
+	public Resource<Pet> getPet(@PathVariable int petid) {//@RequestHeader(name ="Accept-Language",required=false) Locale locale
 		
-		Pet pet= petDao.findPet(petid);
-		if (pet==null)
+		Resource<Pet> resource= petDao.findPet(petid);
+		if (resource==null)
 			throw new ResourceNotFoundException("this resource does not exist");
 		//Internationalization 
 			//String petsex=messageSource.getMessage("dog.male",null,locale);
 		String petsex=messageSource.getMessage("dog.male",null,LocaleContextHolder.getLocale()); //used in case we use a AcceptHeaderLocaleResolver
+		resource.getContent().setSex(petsex);
 		
-		pet.setSex(petsex);
+		
 		//HATEOS
 		//hateoas resource
-		Resource<Pet> resource = new Resource<Pet>(pet);
-		//ControllerLinkBuilder linkAllPets= linkTo(methodOn(this.getClass()).removePet(petid)); //method from ControllerLinkBuilder
-		//resource.add(linkAllPets.withRel("All Pets"));
+		//resource = new Resource<Pet>(pet);
+		ControllerLinkBuilder linkAllPets= linkTo(methodOn(this.getClass()).getPets()); //method from ControllerLinkBuilder
+		resource.add(linkAllPets.withRel("All Pets"));
 		return resource;
 	}
 	
-	@PutMapping(path="/pet")
+	@PostMapping(path="/pet")
 	public ResponseEntity<Pet> addPet(@Valid @RequestBody Pet pet)
 	{
 		try {
-			Pet savedPet=petDao.savePet(pet);
+			Resource<Pet> savedPet=petDao.savePet(pet);
 			//this is one so that the uri of the saved object is part of the response
-			URI location=ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedPet.getPetid()).toUri();
+			URI location=ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedPet.getContent().getPetid()).toUri();
 			return ResponseEntity.created(location).build();
 		} catch (Exception e) {
 			return null;
@@ -94,7 +95,7 @@ public class PetController {
 	}
 	
 	
-	@PostMapping(path="/pet/{petid}")
+	@PutMapping(path="/pet/{petid}")
 	public ResponseEntity<Pet> updatePet(@RequestBody Pet pet)
 	{
 		try {
@@ -108,12 +109,9 @@ public class PetController {
 	
 	
 	@DeleteMapping(path="/pet/{petid}")
-	public ResponseEntity<Pet> removePet(@PathVariable String petid)
+	public ResponseEntity<Pet> removePet(@PathVariable int petid)
 	{
-		
-			Pet pet=petDao.deletePet(petid);
-			if (pet==null)
-				throw new ResourceNotFoundException("this resource does not exist");
+			petDao.deletePet(petid);
 			return ResponseEntity.status(HttpStatus.OK).build();
 		
 	}

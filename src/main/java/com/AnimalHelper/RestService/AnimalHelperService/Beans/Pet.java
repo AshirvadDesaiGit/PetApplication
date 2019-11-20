@@ -19,11 +19,11 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 public class Pet {
 	
-	private String petType;
+	
 	@JsonIgnore //dont include this in the response
 	@Id  //identifying this as an id
 	@GeneratedValue // making this as an auto generated value
-	private String petid;
+	private int petid;
 	@Size(min = 3)
 	@ApiModelProperty("Minimum 3 characters") // swagger description
 	private String petname;
@@ -31,10 +31,12 @@ public class Pet {
 	private String petAddress;
 	private String petLocation;
 	private URL petImageurl;
+	private String petType;
+	//private PetShop petshop;
 	
 	public static class Builder{
 		//Must need parameter
-		private String petid;
+		private int petid;
 		private String petname;
 		//optional parameter
 		private String petType;
@@ -42,11 +44,18 @@ public class Pet {
 		private String petLocation;
 		private URL petImageurl;
 		private String sex;
+		private PetShop petshop;
 		
-		public Builder(String petid, String petname)
+		public Builder(int petid, String petname)
 		{
 			this.petid=petid;
 			this.petname=petname;
+		}
+		
+		public Builder petType(PetShop val) {
+			petshop =val;
+			 return this;
+			 
 		}
 		
 		public Builder petType(String val) {
@@ -104,11 +113,18 @@ public class Pet {
 	}
 
 	
+	
+	/*
+	 * public PetShop getPetshop() { return petshop; }
+	 * 
+	 * public void setPetshop(PetShop petshop) { this.petshop = petshop; }
+	 */
+
 	public String getPetType() {
 		return petType;
 	}
 
-	public String getPetid() {
+	public int getPetid() {
 		return petid;
 	}
 
@@ -142,7 +158,7 @@ public class Pet {
 		this.petType = petType;
 	}
 
-	public void setPetid(String petid) {
+	public void setPetid(int petid) {
 		this.petid = petid;
 	}
 
@@ -165,7 +181,7 @@ public class Pet {
 	
 	public static void main(String mig[]) {
 		try {
-			String petid = "001";
+			int petid = 1;
 			String petname = "mypetname";
 			String petType = "petType";
 			String petAddress = "petAddress";

@@ -2,19 +2,26 @@ package com.AnimalHelper.RestService.AnimalHelperService.Dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Component;
 
 import com.AnimalHelper.RestService.AnimalHelperService.Beans.Pet;
 
 
 
+
 @Component
 public class PetDao {
+	@Autowired
+	PetRepository petRepository;
 	
-	Pet pet1=new Pet.Builder("1", "pet1").petAddress("arlem").petLocation("goa").build();
-	Pet pet2=new Pet.Builder("2", "pet2").petAddress("barebhat").petLocation("india").build();
-	Pet pet3=new Pet.Builder("3", "pet3").petAddress("raia").petLocation("ponda").build();
+	Pet pet1=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
+	Pet pet2=new Pet.Builder(2, "pet2").petAddress("barebhat").petLocation("india").build();
+	Pet pet3=new Pet.Builder(3, "pet3").petAddress("raia").petLocation("ponda").build();
 	
 	List<Pet> pets = new ArrayList<Pet>();
 	
@@ -27,49 +34,59 @@ public class PetDao {
 	
 	//used to list pets
 	public List<Pet> listpets() {
-		return pets;
+		return petRepository.findAll();
 		
 	}
 	//used to savepet to database
-	public Pet savePet(Pet pet) {
+	public Resource<Pet> savePet(Pet pet) {
 		try {
-			pets.add(pet);
+			Pet savedpet = petRepository.save(pet);
+			Resource<Pet> resource = new Resource<Pet>(savedpet);
+			return resource;
+			
 		} catch (Exception e) {
-			// TODO: handle exception
+			return null;
 		}
-		return pet;
 	}
-	
+			
 	//used to retrive pet details
-	public Pet createPet(Pet pet)
+	public Resource<Pet> updatePet(Pet pet)
 	{
-		return new Pet.Builder(pet.getPetid(), pet.getPetname()).build();
-	}
-	
-	//used to retrive pet details
-	public Pet updatePet(Pet pet)
-	{
-		return new Pet.Builder("", "tempname").build();
+		try {
+			Pet savedpet = petRepository.save(pet);
+			Resource<Pet> resource = new Resource<Pet>(savedpet);
+			return resource;
+			
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	//used to delete pet details
-	public Pet deletePet(String petId)
+	public void deletePet(int petId)
 	{
 		try {
-			Pet pet=pets.get(Integer.parseInt(petId));
-			pets.remove(petId);
-			return pet;
+			petRepository.deleteById(petId);
+			
+			
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
-		return null;
+		
 	}
 		
 	//used to retrive pet details
-	public Pet findPet(String petId)
+	public Resource<Pet> findPet(int petId)
 	{
 		try {
-			return pets.get(Integer.parseInt(petId));
+			Optional<Pet> pet = petRepository.findById(petId);
+			if (!pet.isPresent())
+				throw new ResourceNotFoundException("id-" + petId);
+
+			
+			Resource<Pet> resource = new Resource<Pet>(pet.get());
+			return resource;
+			
 		} catch (Exception e) {
 			return null;
 		}
