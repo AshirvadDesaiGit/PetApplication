@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
 import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Component;
 
 import com.AnimalHelper.RestService.AnimalHelperService.Beans.AppUser;
 import com.AnimalHelper.RestService.AnimalHelperService.Beans.Pet;
+import com.AnimalHelper.RestService.AnimalHelperService.RestExceptions.ResourceNotFoundException;
 
 
 
@@ -27,14 +28,31 @@ public class UserDao {
 	}
 	
 	//used to list pets
-	public List<AppUser> listpets() {
+	public List<AppUser> listUsers() {
 		return userRepository.findAll();
 		
 	}
+	
+	//used to retrive pet details
+		public Resource<AppUser> findUser(int userid)
+		{
+			
+				Optional<AppUser> appUser = userRepository.findById(userid);
+				if (!appUser.isPresent())
+					throw new ResourceNotFoundException("User " + userid);
+
+				
+				Resource<AppUser> resource = new Resource<AppUser>(appUser.get());
+				List<Pet> petlist=resource.getContent().getPets();
+				return resource;
+				
+			
+			
+		}
 	//used to savepet to database
-	public Resource<AppUser> saveUser(AppUser pet) {
+	public Resource<AppUser> saveUser(AppUser user) {
 		try {
-			AppUser savedpet = userRepository.save(pet);
+			AppUser savedpet = userRepository.save(user);
 			Resource<AppUser> resource = new Resource<AppUser>(savedpet);
 			return resource;
 			
@@ -69,22 +87,5 @@ public class UserDao {
 		
 	}
 		
-	//used to retrive pet details
-	public Resource<AppUser> findUser(int userid)
-	{
-		try {
-			Optional<AppUser> appUser = userRepository.findById(userid);
-			if (!appUser.isPresent())
-				throw new ResourceNotFoundException("id-" + userid);
-
-			
-			Resource<AppUser> resource = new Resource<AppUser>(appUser.get());
-			List<Pet> petlist=resource.getContent().getPets();
-			return resource;
-			
-		} catch (Exception e) {
-			return null;
-		}
-		
-	}
+	
 }

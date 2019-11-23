@@ -24,6 +24,7 @@ public class AppUser {
 	
 	@OneToMany(mappedBy="petOwner")
 	private List<Pet> pets;
+	
 	private String country;
 	public int getId() {
 		return id;

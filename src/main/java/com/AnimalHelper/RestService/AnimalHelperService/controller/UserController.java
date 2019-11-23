@@ -45,14 +45,17 @@ public class UserController {
 	private UserDao userDao;
 	
 	@Autowired
+	private PetDao petDao;
+	
+	@Autowired
 	private MessageSource messageSource;
 	
 	
 	@GetMapping(path="/user/all")
-	public List<AppUser> getPets() {
+	public List<AppUser> getUsers() {
 		
 		try {
-				return  userDao.listpets();
+				return  userDao.listUsers();
 				
 		} catch (Exception e) {
 			return null;
@@ -122,14 +125,26 @@ public class UserController {
 	
 	
 	
-	@DeleteMapping(path="/user/{userid}")
-	public ResponseEntity<Pet> removeUser(@PathVariable int userid)
+	@DeleteMapping(path="/user/{userId}")
+	public ResponseEntity<Pet> removeUser(@PathVariable int userId)
 	{
-			userDao.deleteUser(userid);
+			userDao.deleteUser(userId); //have to delete all the pets first
 			return ResponseEntity.status(HttpStatus.OK).build();
 		
 	}
 	
-	
+	@PostMapping(path="/user/{userId}/pet")
+	public ResponseEntity<Pet> addPet(@Valid @RequestBody Pet pet,@PathVariable int userId)
+	{
+		
+			AppUser appuser=userDao.findUser(userId).getContent();
+			pet.setPetOwner(appuser);
+			Resource<Pet> savedPet=petDao.savePet(pet);
+			//this is one so that the uri of the saved object is part of the response
+			URI location=ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedPet.getContent().getPetid()).toUri();
+			return ResponseEntity.created(location).build();
+		
+		
+	}
 	
 }
