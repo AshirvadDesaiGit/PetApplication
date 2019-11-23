@@ -13,11 +13,10 @@ public class PetShop {
 
 	@Id  //identifying this as an id
 	@GeneratedValue // making this as an auto generated value
-	private int petid;
-	 int id;
-	 String name;
-	 String franchise;
-	 String address;
+	private int id;
+	private String name;
+	private String franchise;
+	private String address;
 	 //List<Pet> pets;
 	
 	 public PetShop()
@@ -30,12 +29,7 @@ public class PetShop {
 		this.franchise = franchise;
 		this.address = address;
 	}
-	public int getPetid() {
-		return petid;
-	}
-	public void setPetid(int petid) {
-		this.petid = petid;
-	}
+	
 	public int getId() {
 		return id;
 	}

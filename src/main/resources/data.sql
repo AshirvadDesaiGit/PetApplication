@@ -1,4 +1,12 @@
-insert into Pet (PETID,PETNAME,PET_ADDRESS)values (1,'rahul','arlem')
-insert into Pet (PETID,PETNAME,PET_ADDRESS)values (2,'jack','vasco')
-insert into Pet (PETID,PETNAME,PET_ADDRESS)values (3,'jill','ponda')
-insert into Pet (PETID,PETNAME,PET_ADDRESS)values (4,'bill','panjim')
+insert into app_user(id,name,address) values (10000,'Ashirvad','Arlem')
+insert into app_user(id,name,address) values (10002,'Jairam','Vasco')
+insert into app_user(id,name,address) values (10003,'Kavesh','Margao')
+
+
+insert into Pet (PETID,PETNAME,PET_ADDRESS,pet_owner_id)values (100000,'rahul','Arlem,',10000)
+insert into Pet (PETID,PETNAME,PET_ADDRESS,pet_owner_id)values (100001,'jack','vasco',10002)
+insert into Pet (PETID,PETNAME,PET_ADDRESS,pet_owner_id)values (100002,'jill','ponda',10003)
+
+
+
+

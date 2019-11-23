@@ -5,8 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -32,8 +34,21 @@ public class Pet {
 	private String petLocation;
 	private URL petImageurl;
 	private String petType;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	private AppUser petOwner;
+	
 	//private PetShop petshop;
 	
+	public AppUser getPetOwner() {
+		return petOwner;
+	}
+
+	public void setPetOwner(AppUser petOwner) {
+		this.petOwner = petOwner;
+	}
+
+
 	public static class Builder{
 		//Must need parameter
 		private int petid;
