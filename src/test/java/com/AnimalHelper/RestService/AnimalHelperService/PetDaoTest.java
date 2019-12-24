@@ -61,7 +61,7 @@ public class PetDaoTest {
     }
 
     @Test
-    public void  testFindUser(){
+    public void  testFindPet(){
         Pet pet1=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
         Optional<Pet> p = Optional.ofNullable(pet1);
         when(petRepository.findById(1)).thenReturn(p);
@@ -73,6 +73,53 @@ public class PetDaoTest {
         Resource<Pet> petNotFound = petDao.findPet(999);
         verify(petRepository, times(1)).findById(999);
         Assert.assertEquals(null, petNotFound);
+    }
 
+    @Test
+    public void testSavePet(){
+        Pet pet1=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
+        when(petRepository.save(pet1)).thenReturn(pet1);
+
+        Resource<Pet> pet = petDao.savePet(pet1);
+
+        verify(petRepository).save(any());
+        Assert.assertEquals(pet.getContent().getPetname(), pet1.getPetname());
+
+        Pet pet2=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
+        when(petRepository.save(pet2)).thenThrow(new RuntimeException());
+
+        Resource<Pet> petex = petDao.savePet(pet2);
+
+        verify(petRepository, times(1)).save(pet2);
+        verify(petRepository, times(2)).save(any());
+        Assert.assertEquals(null, petex);
+    }
+
+    @Test
+    public void testUpdatePet(){
+        Pet pet1=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
+        when(petRepository.save(pet1)).thenReturn(pet1);
+
+        Resource<Pet> pet = petDao.updatePet(pet1);
+
+        verify(petRepository).save(any());
+        Assert.assertEquals(pet.getContent().getPetname(), pet1.getPetname());
+
+        Pet pet2=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
+        when(petRepository.save(pet2)).thenThrow(new RuntimeException());
+
+        Resource<Pet> petex = petDao.updatePet(pet2);
+
+        verify(petRepository, times(1)).save(pet2);
+        verify(petRepository, times(2)).save(any());
+        Assert.assertEquals(null, petex);
+    }
+
+    @Test
+    public void testDeletePet(){
+        doNothing().when(petRepository).deleteById(1);
+        petDao.deletePet(1);
+
+        verify(petRepository,times(1)).deleteById(1);
     }
 }

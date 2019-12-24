@@ -11,13 +11,20 @@ import org.springframework.stereotype.Component;
 import com.AnimalHelper.RestService.AnimalHelperService.Beans.Pet;
 import com.AnimalHelper.RestService.AnimalHelperService.RestExceptions.ResourceNotFoundException;
 
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 
 @Component
 public class PetDao {
 	@Autowired
 	PetRepository petRepository;
+
+	// save method is used for save/update
+	// use entity manager if you choose a composite key of date being passed,
+	// where if duplicate is passed then it should throw exception
+	@PersistenceContext
+	EntityManager entityManager;
 	
 	Pet pet1=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
 	Pet pet2=new Pet.Builder(2, "pet2").petAddress("barebhat").petLocation("india").build();
