@@ -67,7 +67,7 @@ public class PetDaoTest {
         when(petRepository.findById(1)).thenReturn(p);
         Resource<Pet> pet = petDao.findPet(1);
         verify(petRepository, times(1)).findById(1);
-        Assert.assertEquals(pet.getContent().getPetname(), pet1.getPetname());
+        Assert.assertEquals(pet.getContent().getPetName(), pet1.getPetName());
 
         when(petRepository.findById(999)).thenThrow(new ResourceNotFoundException("Pet id 999 not found"));
         Resource<Pet> petNotFound = petDao.findPet(999);
@@ -83,7 +83,7 @@ public class PetDaoTest {
         Resource<Pet> pet = petDao.savePet(pet1);
 
         verify(petRepository).save(any());
-        Assert.assertEquals(pet.getContent().getPetname(), pet1.getPetname());
+        Assert.assertEquals(pet.getContent().getPetName(), pet1.getPetName());
 
         Pet pet2=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
         when(petRepository.save(pet2)).thenThrow(new RuntimeException());
@@ -103,7 +103,7 @@ public class PetDaoTest {
         Resource<Pet> pet = petDao.updatePet(pet1);
 
         verify(petRepository).save(any());
-        Assert.assertEquals(pet.getContent().getPetname(), pet1.getPetname());
+        Assert.assertEquals(pet.getContent().getPetName(), pet1.getPetName());
 
         Pet pet2=new Pet.Builder(1, "pet1").petAddress("arlem").petLocation("goa").build();
         when(petRepository.save(pet2)).thenThrow(new RuntimeException());

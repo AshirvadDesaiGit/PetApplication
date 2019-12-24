@@ -15,7 +15,7 @@ import io.swagger.annotations.ApiModel;
 @Entity
 public class AppUser {
 
-	@JsonIgnore //dont include this in the response
+	//@JsonIgnore //dont include this in the response
 	@Id  //identifying this as an id
 	@GeneratedValue // making this as an auto generated value
 	private int id;

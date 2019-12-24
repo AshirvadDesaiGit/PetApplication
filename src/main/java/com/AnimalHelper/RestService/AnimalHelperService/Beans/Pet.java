@@ -4,14 +4,9 @@ import java.net.MalformedURLException;
 //import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
@@ -25,20 +20,32 @@ public class Pet {
 	@JsonIgnore //dont include this in the response
 	@Id  //identifying this as an id
 	@GeneratedValue // making this as an auto generated value
-	private int petid;
+	@Column(name = "petid")
+	private int petId;
+
 	@Size(min = 3)
 	@ApiModelProperty("Minimum 3 characters") // swagger description
-	private String petname;
+	@Column(name = "petname")
+	private String petName;
+
 	private String sex;
+
+	@Column(name = "petaddress")
 	private String petAddress;
+
+	@Column(name = "petlocation")
 	private String petLocation;
+
 	private URL petImageurl;
+
 	private String petType;
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="pet_owner_id", nullable=false)
 	private AppUser petOwner;
 	
-	//private PetShop petshop;
+	//private PetShop petShop;
 	
 	public AppUser getPetOwner() {
 		return petOwner;
@@ -51,24 +58,24 @@ public class Pet {
 
 	public static class Builder{
 		//Must need parameter
-		private int petid;
-		private String petname;
+		private int petId;
+		private String petName;
 		//optional parameter
 		private String petType;
 		private String petAddress;
 		private String petLocation;
 		private URL petImageurl;
 		private String sex;
-		private PetShop petshop;
+		private PetShop petShop;
 		
-		public Builder(int petid, String petname)
+		public Builder(int petId, String petName)
 		{
-			this.petid=petid;
-			this.petname=petname;
+			this.petId = petId;
+			this.petName = petName;
 		}
 		
 		public Builder petType(PetShop val) {
-			petshop =val;
+			petShop =val;
 			 return this;
 			 
 		}
@@ -118,8 +125,8 @@ public class Pet {
 	private Pet(Builder builder)
 	{
 		  petType=builder.petType;
-		  petid=builder.petid;
-		  petname=builder.petname;
+		  petId =builder.petId;
+		  petName =builder.petName;
 		  petAddress=builder.petAddress;
 		  petLocation=builder.petLocation;
 		  petImageurl=builder.petImageurl;
@@ -130,21 +137,21 @@ public class Pet {
 	
 	
 	/*
-	 * public PetShop getPetshop() { return petshop; }
+	 * public PetShop getPetshop() { return petShop; }
 	 * 
-	 * public void setPetshop(PetShop petshop) { this.petshop = petshop; }
+	 * public void setPetshop(PetShop petShop) { this.petShop = petShop; }
 	 */
 
 	public String getPetType() {
 		return petType;
 	}
 
-	public int getPetid() {
-		return petid;
+	public int getPetId() {
+		return petId;
 	}
 
-	public String getPetname() {
-		return petname;
+	public String getPetName() {
+		return petName;
 	}
 	
 
@@ -173,12 +180,12 @@ public class Pet {
 		this.petType = petType;
 	}
 
-	public void setPetid(int petid) {
-		this.petid = petid;
+	public void setPetId(int petId) {
+		this.petId = petId;
 	}
 
-	public void setPetname(String petname) {
-		this.petname = petname;
+	public void setPetName(String petName) {
+		this.petName = petName;
 	}
 
 	public void setPetAddress(String petAddress) {
