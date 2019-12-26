@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Pet {
 	
 	
-	@JsonIgnore //dont include this in the response
+	//@JsonIgnore //dont include this in the response
 	@Id  //identifying this as an id
 	@GeneratedValue // making this as an auto generated value
 	@Column(name = "petid")
