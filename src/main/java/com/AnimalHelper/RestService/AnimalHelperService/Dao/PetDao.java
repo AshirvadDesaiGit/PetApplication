@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Component;
 
@@ -98,5 +102,27 @@ public class PetDao {
 			return null;
 		}
 		
+	}
+
+	public long getPetCountByName(String petname) {
+		return petRepository.countByPetName(petname);
+	}
+
+	public Page<Pet> getAllByPage(Integer pageNo, Integer pageSize, String sortBy, String order) {
+
+		/*
+		Either return page object as is. or filter out the content and create a list.
+		Page contains most of the details related to pagination, so could use the page object as is.
+		 */
+		Pageable page = PageRequest.of(pageNo, pageSize,
+				Sort.by(("ASC".equalsIgnoreCase(order))? Sort.Direction.ASC : Sort.Direction.DESC, sortBy));
+		return petRepository.findAll(page);
+	}
+
+	public Page<Pet> getAllByPetName(String petname, Integer pageNo, Integer pageSize, String sortBy, String order) {
+
+		Pageable page = PageRequest.of(pageNo, pageSize,
+				Sort.by(("ASC".equalsIgnoreCase(order))? Sort.Direction.ASC : Sort.Direction.DESC, sortBy));
+		return petRepository.findAllByPetName(petname, page);
 	}
 }

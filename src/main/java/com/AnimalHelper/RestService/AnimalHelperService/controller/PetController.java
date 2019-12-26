@@ -6,21 +6,18 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.AnimalHelper.RestService.AnimalHelperService.Beans.Pet;
@@ -109,7 +106,55 @@ public class PetController {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		
 	}
-	
+
+	@GetMapping(path = "/pet/{name}/count", produces = {"application/json", "application/xml"})
+	@ApiOperation(value = "Get the count of Pets by name" ,response = Long.class)
+	public ResponseEntity<Long> countPetsByName(@ApiParam("Name Of Pet") @PathVariable(value="name") String name){
+
+		System.out.println("name"+name);
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(petDao.getPetCountByName(name));
+	}
+
+	@GetMapping(path = "/pets/all/page/{pageno}", produces = {"application/json", "application/xml"})
+	@ApiOperation(value = "Get All Pets by Page number" ,response = Page.class)
+	public ResponseEntity<Page<Pet>> getAllPets(
+			@ApiParam(value = "page number") @PathVariable(name = "pageno") Integer page,
+			@ApiParam(value = "page size") @RequestParam(defaultValue = "5") Integer pageSize,
+			@ApiParam(value = "Field by which the results will be sorted") @RequestParam(defaultValue = "petId") String sortBy,
+			@ApiParam(value = "Sorting order. Use values asc or desc") @RequestParam(defaultValue = "DESC") String order ){
+
+		System.out.println("pageno"+page);
+		System.out.println("pageSize"+pageSize);
+		System.out.println("sortby"+sortBy);
+		System.out.println("order"+order);
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(petDao.getAllByPage(page, pageSize, sortBy, order));
+	}
+
+	@GetMapping(path = "/pets/{petname}/page/{pageno}", produces = {"application/json", "application/xml"})
+	@ApiOperation(value = "Get All Pets by Page number" ,response = Page.class)
+	public ResponseEntity<Page<Pet>> getAllPetsByName(
+			@ApiParam(value = "pet name") @PathVariable(name = "petname") String petname,
+			@ApiParam(value = "page number") @PathVariable(name = "pageno") Integer page,
+			@ApiParam(value = "page size") @RequestParam(defaultValue = "5") Integer pageSize,
+			@ApiParam(value = "Field by which the results will be sorted") @RequestParam(defaultValue = "petId") String sortBy,
+			@ApiParam(value = "Sorting order. Use values asc or desc") @RequestParam(defaultValue = "DESC") String order ){
+
+		System.out.println("petname"+petname);
+		System.out.println("pageno"+page);
+		System.out.println("pageSize"+pageSize);
+		System.out.println("sortby"+sortBy);
+		System.out.println("order"+order);
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(petDao.getAllByPetName(petname, page, pageSize, sortBy, order));
+	}
+
 	/**
 	 * used to dynamically filter out elements of a bean 
 	 * @param pet
