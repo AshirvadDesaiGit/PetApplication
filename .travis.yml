@@ -1,10 +1,10 @@
 #tell travis that sudo is reqired
-sudo: required
+#sudo: required
 #tell travis that this service is needed
 language: java
 jdk: oraclejdk11
-service:
-    - docker
+#service:
+#    - docker
 #prepare dockerfile for build and tag using docker id
 #ashirvaddesai/PetApplication can be replaced by any tag
 #before_install:
