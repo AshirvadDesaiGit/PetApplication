@@ -2,13 +2,13 @@ sudo: required
 #tell travis that this service is needed
 language: java
 jdk: oraclejdk11
-#service:
-#    - docker
+service:
+    - docker
 #prepare dockerfile for build and tag using docker id
 #ashirvaddesai/PetApplication can be replaced by any tag
 #before_install:
-#    -docker build -t ashirvaddesai/PetApplication -f Dockerfile.dev .
 before_install:
     - chmod +x mvnw
 script:
     - mvn package -DskipTests
+    - docker build -t ashirvaddesai/PetApplication -f Dockerfile.dev .
