@@ -2,7 +2,7 @@
 sudo: required
 #tell travis that this service is needed
 language: java
-jdk: oraclejdk8
+jdk: oraclejdk11
 service:
     - docker
 #prepare dockerfile for build and tag using docker id
