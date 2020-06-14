@@ -11,4 +11,5 @@ before_install:
     - chmod +x mvnw
 script:
     - mvn package -DskipTests
-    - docker build -t ashirvaddesai/PetApplication -f Dockerfile.dev .
+    - docker build -t ashirvaddesai/petapplication -f Dockerfile.dev .
+    - docker run -e CI=true ashirvaddesai/petapplication
