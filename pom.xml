@@ -58,10 +58,10 @@
     	
     	
     	<!-- For Basic Auth  -->
-	    <!-- <dependency>
+	     <dependency>
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-security</artifactId>
-    	</dependency> -->
+    	</dependency>
     	
     	<!-- For monitoring Apis  -->
 	    <dependency>
@@ -82,17 +82,30 @@
 		</dependency>
 		
 		<!-- H2 database temporary implementation  -->
-	   	<dependency>
+	   	<!-- <dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 		
 		<!--  for dynamic loading of classes during development -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
+		
+		<!-- JWT
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency> -->
+		
+		<!-- Mysql Connector -->
+		 <dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+         </dependency>
     	
 	</dependencies>
 	
