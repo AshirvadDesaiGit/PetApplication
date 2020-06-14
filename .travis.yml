@@ -1,5 +1,4 @@
-#tell travis that sudo is reqired
-#sudo: required
+sudo: required
 #tell travis that this service is needed
 language: java
 jdk: oraclejdk11
