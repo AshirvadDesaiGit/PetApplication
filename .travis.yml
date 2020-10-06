@@ -7,6 +7,8 @@ service:
 #prepare dockerfile for build and tag using docker id
 #ashirvaddesai/PetApplication can be replaced by any tag
 #before_install:
+# bucket_path same as app name
+# aws acess key and and id stored in travis project->settings->env
 before_install:
     - chmod +x mvnw
 script:
@@ -20,9 +22,9 @@ deploy:
     app: "ShareACare"
     env: "Shareacare-env-1"
     bucket_name: "elasticbeanstalk-ap-south-1-924847644856"
-    bucket_path: "ShareACare" #same as app name
+    bucket_path: "ShareACare"
     on:
         branch:master
-    access_key_id:$aws_access_key #stored in travis project->settings->env
+    access_key_id:$aws_access_key 
     secret_access_key:
         secure:"$aws_secret_key"
