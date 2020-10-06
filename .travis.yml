@@ -9,21 +9,21 @@ service:
 #before_install:
 # bucket_path same as app name
 # aws acess key and and id stored in travis project->settings->env
+#- docker run -e CI=true ashirvaddesai/
+#http://shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk.com/
 before_install:
     - chmod +x mvnw
 script:
     - mvn package -DskipTests
     - docker build -t ashirvaddesai/petapplication -f Dockerfile.dev .
-#- docker run -e CI=true ashirvaddesai/
-#http://shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk.com/
 deploy:
     provider:elasticbeanstalk
-    region:"ap-south-1"
-    app: "ShareACare"
-    env: "Shareacare-env-1"
-    bucket_name: "elasticbeanstalk-ap-south-1-924847644856"
-    bucket_path: "ShareACare"
+    region: 'ap-south-1'
+    app: 'ShareACare'
+    env: 'Shareacare-env-1'
+    bucket_name: 'elasticbeanstalk-ap-south-1-924847644856'
+    bucket_path: 'ShareACare'
     on:
-        branch:master
-    access_key_id:$aws_access_key 
-    secret_access_key:$aws_secret_key
+        branch: master
+    access_key_id: $aws_access_key 
+    secret_access_key: $aws_secret_key
