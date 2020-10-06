@@ -10,7 +10,7 @@ service:
 # bucket_path same as app name
 # aws acess key and and id stored in travis project->settings->env
 #- docker run -e CI=true ashirvaddesai/
-#http://shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk.com/
+#shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk
 before_install:
     - chmod +x mvnw
 script:
