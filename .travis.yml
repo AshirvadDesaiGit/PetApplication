@@ -14,7 +14,7 @@ before_install:
 script:
     - mvn package -DskipTests
     - docker build -t ashirvaddesai/petapplication -f Dockerfile.dev .
-    #- docker run -e CI=true ashirvaddesai/
+#- docker run -e CI=true ashirvaddesai/
 #http://shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk.com/
 deploy:
     provider:elasticbeanstalk
