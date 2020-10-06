@@ -12,4 +12,17 @@ before_install:
 script:
     - mvn package -DskipTests
     - docker build -t ashirvaddesai/petapplication -f Dockerfile.dev .
-    - docker run -e CI=true ashirvaddesai/petapplication
+    - docker run -e CI=true ashirvaddesai/
+#http://shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk.com/
+deploy:
+    provider:elasticbeanstalk
+    region:"ap-south-1"
+    app: "ShareACare"
+    env: "Shareacare-env-1"
+    bucket_name: "elasticbeanstalk-ap-south-1-924847644856"
+    bucket_path: "ShareACare" #same as app name
+    on:
+        branch:master
+    access_key_id:$aws_access_key #stored in travis project->settings->env
+    secret_access_key:
+        secure:"$aws_secret_key"
