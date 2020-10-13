@@ -4,21 +4,15 @@ language: java
 jdk: oraclejdk11
 service:
     - docker
-#prepare dockerfile for build and tag using docker id
-#ashirvaddesai/PetApplication can be replaced by any tag
-#before_install:
-# bucket_path same as app name
-# aws acess key and and id stored in travis project->settings->env
-#- docker run -e CI=true ashirvaddesai/
-#shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk
 before_install:
     - chmod +x mvnw
 script:
+#prepare dockerfile for build and tag using docker id
     - mvn package -DskipTests
     - docker build -t ashirvaddesai/petapplication -f Dockerfile.dev .
     - docker run -e CI=true ashirvaddesai/petapplication
 deploy:
-    provider:elasticbeanstalk
+    provider: elasticbeanstalk
     region: 'ap-south-1'
     app: 'ShareACare'
     env: 'Shareacare-env-1'
@@ -26,6 +20,7 @@ deploy:
     bucket_path: 'ShareACare'
     on:
         branch: master
+# aws acess key and and id stored in travis project->settings->env
+#shareacare-env-1.eba-fzndm6ku.ap-south-1.elasticbeanstalk
     access_key_id: $aws_access_key
     secret_access_key: $aws_secret_key
-    
